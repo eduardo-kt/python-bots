@@ -2,9 +2,11 @@ import os
 import logging
 import traceback
 from botcity.web import WebBot, Browser
+from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 
-from utils import setup_variables
+from utils import utils_variables
 
 
 def logfile_setup() -> None:
@@ -14,7 +16,7 @@ def logfile_setup() -> None:
     log_dir = "archive"
     log_file = os.path.join(
         log_dir,
-        f"logfile_{setup_variables.LOGFILE_KEY_NAME}.log"
+        f"logfile_{utils_variables.LOGFILE_KEY_NAME}.log"
     )
 
     logging.basicConfig(
@@ -30,10 +32,10 @@ def web_bot_setup() -> WebBot:
     """Defina a estrutura da instância do WebBot"""
 
     bot = WebBot()
-    bot.browser = Browser.FIREFOX
+    bot.browser = Browser.CHROME
     bot.headless = False
-    bot.driver_path = GeckoDriverManager().install()
-    bot.browse(setup_variables.URL_PATH)
+    bot.driver_path = ChromeDriverManager().install()
+    bot.browse(utils_variables.URL_SOURCE)    
     bot.driver.maximize_window()
     return bot
 
