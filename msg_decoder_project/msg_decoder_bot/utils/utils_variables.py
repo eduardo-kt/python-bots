@@ -1,3 +1,6 @@
+from datetime import datetime
+from pathlib import Path
+
 # URLs
 URL_SOURCE = (
     "https://pathfinder.automationanywhere.com/challenges/"
@@ -9,6 +12,16 @@ URL_SOURCE = (
 
 URL_TRADUTOR = "https://translate.glosbe.com/bg-en"
 
+# variáveis
+LOGFILE_KEY_NAME = datetime.now().strftime("%Y%m%d%H%M")
+
+ENV_PATH = Path(__file__).parent / ".env"
+
 # SELECTORS
-
-
+XPATH_ACCEPT_COOKIES = '//*[@id="onetrust-accept-btn-handler"]'
+XPATH_COMMUNITY_BUTTON = (
+    '//button[@id="button_modal-login-btn__iPh6x" and text()="Community login"]'
+)
+XPATH_NAME_LOGIN = '//input[@id="43:2;a"]'
+XPATH_NEXT_BUTTON = '//button[text()="Next"]'
+XPATH_LOGIN_BUTTON = '//button[text()="Log in"]'
