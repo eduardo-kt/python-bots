@@ -1,9 +1,7 @@
 import os
 import logging
 import traceback
-from botcity.web import WebBot, Browser
-from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
+from botcity.web import WebBot, Browser, By
 from webdriver_manager.chrome import ChromeDriverManager
 
 from utils import utils_variables
@@ -45,3 +43,28 @@ def custom_error_message(err):
 
     lineno = traceback.extract_tb(err.__traceback__)[-1].lineno
     logging.error(f'{type(err).__name__}:{err} - Linha: {lineno}')
+
+
+def login_community(bot: WebBot,
+                    username: str,
+                    password: str) -> None:
+
+    bot.find_element(utils_variables.XPATH_ACCEPT_COOKIES,
+                     By.XPATH).click()
+
+    bot.find_element(utils_variables.XPATH_COMMUNITY_BUTTON,
+                     By.XPATH).click()
+
+    bot.find_element(utils_variables.XPATH_NAME_LOGIN,
+                     By.XPATH).send_keys(username)
+
+    bot.find_element(utils_variables.XPATH_NEXT_BUTTON,
+                     By.XPATH).click()
+    bot.wait(2000)
+
+    bot.paste(password)
+
+    bot.find_element(utils_variables.XPATH_LOGIN_BUTTON,
+                     By.XPATH).click()
+    
+    
