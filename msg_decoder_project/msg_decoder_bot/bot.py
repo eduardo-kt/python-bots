@@ -39,57 +39,26 @@ def main():
     
     # Fecha navegador
     # try:
-    #     subprocess.run(["taskkill", "/f", "/im", "firefox.exe"])
-    #     logging.info("Sucesso em fechar app Firefox.")
+    #     subprocess.run(["taskkill", "/f", "/im", "chrome.exe"])
+    #     logging.info("Sucesso em fechar app Chrome.")
     # except Exception as err:
     #     utils_setup.custom_error_message(err=err)    
     
     # Instancia bot
     try:
         bot = utils_setup.web_bot_setup()
+        logging.info("Área Community acessada.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
     
     # Login em Area Community
-    # Tenta encontrar e preencher as credenciais da Community
     try:
-        cookies = bot.find_element(
-            utils_variables.XPATH_ACCEPT_COOKIES,
-            By.XPATH,
-        )
-        cookies.click()
-
-        community_buttom = bot.find_element(
-            utils_variables.XPATH_COMMUNITY_BUTTON,
-            By.XPATH,
-        )
-        community_buttom.click()
-
-        name_field_aa = bot.find_element(
-            utils_variables.XPATH_NAME_LOGIN,
-            By.XPATH
-        )
-        name_field_aa.send_keys(username_aa)
-
-        next_button_aa = bot.find_element(
-            utils_variables.XPATH_NEXT_BUTTON,
-            By.XPATH
-        )
-        next_button_aa.click()
-        bot.wait(2000)
-
-        bot.paste(password_aa)
-
-        log_button_aa = bot.find_element(
-            utils_variables.XPATH_LOGIN_BUTTON,
-            By.XPATH
-        )
-        log_button_aa.click()
+        utils_setup.login_community(bot=bot,
+                                    username=username_aa,
+                                    password=password_aa)
         logging.info("Área Community acessada.")
     except Exception as err:
-        logging.error(
-            f"Erro ao acessar área Community.\n{err}"
-        )            
+        utils_setup.custom_error_message(err=err)
     
     bot.wait(5000)
 
