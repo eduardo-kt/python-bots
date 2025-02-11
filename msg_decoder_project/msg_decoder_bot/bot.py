@@ -1,4 +1,5 @@
 import logging
+import subprocess
 from botcity.web import WebBot, Browser, By
 from botcity.maestro import BotMaestroSDK
 
@@ -13,31 +14,31 @@ def main():
         utils_setup.logfile_setup()
         logging.info("Início do processo.")
         logging.info("Sucesso em iniciar Logfile na pasta archive.")
-    except Exception as err:        
+    except Exception as err:
         print(f'{type(err).__name__}:{err}')
 
-    # Runner passes the server url, the id of the task being executed,
-    # the access token and the parameters that this task receives (when applicable).
-    maestro = BotMaestroSDK.from_sys_args()
-    ## Fetch the BotExecution with details from the task, including parameters
-    execution = maestro.get_execution()
-
-    print(f"Task ID is: {execution.task_id}")
-    print(f"Task Parameters are: {execution.parameters}")
-
-    bot = WebBot()
-
-    # Configure whether or not to run on headless mode
-    bot.headless = False
-
-    # Uncomment to change the default Browser to Firefox
-    # bot.browser = Browser.FIREFOX
-
-    # Uncomment to set the WebDriver path
-    # bot.driver_path = "<path to your WebDriver binary>"
-
-    # Opens the BotCity website.
-    bot.browse("https://www.botcity.dev")
+    # Configura maestro
+    try:
+        maestro = BotMaestroSDK.from_sys_args()
+        execution = maestro.get_execution()
+        print(f"Task ID is: {execution.task_id}")
+        print(f"Task Parameters are: {execution.parameters}")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+    
+    # Fecha navegador
+    try:
+        subprocess.run(["taskkill", "/f", "/im", "firefox.exe"])
+        logging.info("Sucesso em fechar app Firefox.")
+    except Exception as err:
+        setup_utils.custom_error_message(err=err)    
+    
+    # Instancia bot
+    try:
+        bot = utils_setup.web_bot_setup()
+    except Exception as err:
+        setup_utils.custom_error_message(err=err)
+    
 
     # Implement here your logic...
     ...
