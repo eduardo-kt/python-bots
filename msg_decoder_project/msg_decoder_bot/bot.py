@@ -1,9 +1,19 @@
+import os
 import logging
 import subprocess
-from botcity.web import WebBot, Browser, By
-from botcity.maestro import BotMaestroSDK
+from dotenv import load_dotenv
+from botcity.web import By
+from botcity.maestro import BotMaestroSDK, AutomationTaskFinishStatus
+from utils import utils_setup, utils_variables
 
-from utils import utils_setup
+# Desligar os logs do webdriver_manager
+os.environ['WDM_LOG'] = str(logging.NOTSET)
+
+load_dotenv()
+username_aa = os.getenv('AA_CREDENTIAL_USERNAME')
+password_aa = os.getenv('AA_CREDENTIAL_PASSWORD')
+login_target = os.getenv('TEST_CREDENTIAL_USERNAME')
+password_target = os.getenv('TEST_CREDENTIAL_PASSWORD')
 
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
@@ -23,43 +33,76 @@ def main():
         execution = maestro.get_execution()
         print(f"Task ID is: {execution.task_id}")
         print(f"Task Parameters are: {execution.parameters}")
+        logging.info("Sucesso na configuração do BotCity Maestro.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
     
     # Fecha navegador
-    try:
-        subprocess.run(["taskkill", "/f", "/im", "firefox.exe"])
-        logging.info("Sucesso em fechar app Firefox.")
-    except Exception as err:
-        setup_utils.custom_error_message(err=err)    
+    # try:
+    #     subprocess.run(["taskkill", "/f", "/im", "firefox.exe"])
+    #     logging.info("Sucesso em fechar app Firefox.")
+    # except Exception as err:
+    #     utils_setup.custom_error_message(err=err)    
     
     # Instancia bot
     try:
         bot = utils_setup.web_bot_setup()
     except Exception as err:
-        setup_utils.custom_error_message(err=err)
+        utils_setup.custom_error_message(err=err)
     
+    # Login em Area Community
+    # Tenta encontrar e preencher as credenciais da Community
+    try:
+        cookies = bot.find_element(
+            utils_variables.XPATH_ACCEPT_COOKIES,
+            By.XPATH,
+        )
+        cookies.click()
 
-    # Implement here your logic...
-    ...
+        community_buttom = bot.find_element(
+            utils_variables.XPATH_COMMUNITY_BUTTON,
+            By.XPATH,
+        )
+        community_buttom.click()
 
-    # Wait 3 seconds before closing
-    bot.wait(3000)
+        name_field_aa = bot.find_element(
+            utils_variables.XPATH_NAME_LOGIN,
+            By.XPATH
+        )
+        name_field_aa.send_keys(username_aa)
 
-    # Finish and clean up the Web Browser
-    # You MUST invoke the stop_browser to avoid
-    # leaving instances of the webdriver open
-    bot.stop_browser()
+        next_button_aa = bot.find_element(
+            utils_variables.XPATH_NEXT_BUTTON,
+            By.XPATH
+        )
+        next_button_aa.click()
+        bot.wait(2000)
 
-    # Uncomment to mark this task as finished on BotMaestro
-    # maestro.finish_task(
-    #     task_id=execution.task_id,
-    #     status=AutomationTaskFinishStatus.SUCCESS,
-    #     message="Task Finished OK.",
-    #     total_items=0,
-    #     processed_items=0,
-    #     failed_items=0
-    # )
+        bot.paste(password_aa)
+
+        log_button_aa = bot.find_element(
+            utils_variables.XPATH_LOGIN_BUTTON,
+            By.XPATH
+        )
+        log_button_aa.click()
+        logging.info("Área Community acessada.")
+    except Exception as err:
+        logging.error(
+            f"Erro ao acessar área Community.\n{err}"
+        )            
+    
+    bot.wait(5000)
+
+    #bot.stop_browser()
+    
+    maestro.finish_task(
+        task_id=execution.task_id,
+        status=AutomationTaskFinishStatus.SUCCESS,
+        message="Task Finished OK.",
+        total_items=0,
+        processed_items=0,
+        failed_items=0
+    )
 
 
 def not_found(label):
