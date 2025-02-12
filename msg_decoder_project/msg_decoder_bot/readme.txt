@@ -1,0 +1,2 @@
+- altere o nome do arquivo .env-example para .env e preencha as credenciais.
+- disponível no github: https://github.com/eduardo-kt/python-bots.git
