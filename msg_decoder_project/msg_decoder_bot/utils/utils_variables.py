@@ -1,7 +1,8 @@
+import os
 from datetime import datetime
 from pathlib import Path
 
-# URLs
+# URLs PATHs
 URL_SOURCE = (
     "https://pathfinder.automationanywhere.com/challenges/"
     "AutomationAnywhereLabs-Translate.html?_gl=1*uoc654*_g"
@@ -15,12 +16,20 @@ URL_TRADUTOR = "https://translate.glosbe.com/bg-en"
 # variáveis
 LOGFILE_KEY_NAME = datetime.now().strftime("%Y%m%d%H%M")
 
+# Directory PATHs
 ENV_PATH = Path(__file__).parent / ".env"
+
+IMAGE_FILEPATH = os.path.join(
+    os.getcwd(),
+    "archive",
+    f"{LOGFILE_KEY_NAME}_imagefile.png"
+)
 
 # SELECTORS
 XPATH_ACCEPT_COOKIES = '//*[@id="onetrust-accept-btn-handler"]'
 XPATH_COMMUNITY_BUTTON = (
-    '//button[@id="button_modal-login-btn__iPh6x" and text()="Community login"]'
+    '//button[@id="button_modal-login-btn'
+    '__iPh6x" and text()="Community login"]'
 )
 XPATH_NAME_LOGIN = '//input[@id="43:2;a"]'
 XPATH_NEXT_BUTTON = '//button[text()="Next"]'
