@@ -14,7 +14,7 @@ def logfile_setup() -> None:
     log_dir = "archive"
     log_file = os.path.join(
         log_dir,
-        f"logfile_{utils_variables.LOGFILE_KEY_NAME}.log"
+        f"{utils_variables.LOGFILE_KEY_NAME}_logfile.log"
     )
 
     logging.basicConfig(
@@ -26,19 +26,19 @@ def logfile_setup() -> None:
     )
 
 
-def web_bot_setup() -> WebBot:
+def web_bot_setup(URL: str) -> WebBot:
     """Defina a estrutura da instância do WebBot"""
 
     bot = WebBot()
     bot.browser = Browser.CHROME
     bot.headless = False
     bot.driver_path = ChromeDriverManager().install()
-    bot.browse(utils_variables.URL_SOURCE)    
+    bot.browse(URL)
     bot.driver.maximize_window()
     return bot
 
 
-def custom_error_message(err):
+def custom_error_message(err: Exception) -> None:
     """Defina o formato da exception que é enviada ao logfile."""
 
     lineno = traceback.extract_tb(err.__traceback__)[-1].lineno
@@ -48,6 +48,7 @@ def custom_error_message(err):
 def login_community(bot: WebBot,
                     username: str,
                     password: str) -> None:
+    """Realiza todo o processo de Community login no Automation Anywhere"""
 
     bot.find_element(utils_variables.XPATH_ACCEPT_COOKIES,
                      By.XPATH).click()
