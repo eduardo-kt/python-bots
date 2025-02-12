@@ -67,5 +67,50 @@ def login_community(bot: WebBot,
 
     bot.find_element(utils_variables.XPATH_LOGIN_BUTTON,
                      By.XPATH).click()
-    
-    
+
+
+def translate_and_return_string(bot: WebBot) -> None:
+    """Transfere uma string entre fonte e tradutor
+    e retorna texto traduzido."""
+
+    bulgarian_string = bot.find_element(
+        "p.lead.mt-2+h2",
+        By.CSS_SELECTOR
+    ).text
+    bulgarian_string = bulgarian_string.replace("Text to Decode: ", "")
+    logging.info(f"Sucesso ao capturar string:{bulgarian_string}")
+    bot.create_tab(utils_variables.URL_TRADUTOR)
+    opened_tabs = bot.get_tabs()
+    tab_tradutor = opened_tabs[1]
+    tab_bulgarian = opened_tabs[0]
+    bot.activate_tab(tab_tradutor)
+    logging.info("Sucesso ao abrir página do tradutor.")
+    bot.find_element(
+        "textarea.p-2",
+        By.CSS_SELECTOR
+    ).send_keys(bulgarian_string)
+    while True:
+        translate_string = bot.find_element(
+            "div.h-full",
+            By.CSS_SELECTOR
+        ).text
+        if translate_string:
+            logging.info(f"Sucesso ao traduzir string: {translate_string}")
+            break
+    bot.activate_tab(tab_bulgarian)
+    bot.find_element(
+        "input#message_input",
+        By.CSS_SELECTOR
+    ).send_keys(translate_string)
+
+
+def finish_and_screenshot_process(bot: WebBot) -> None:
+    """Finaliza processo e salva tela em screenshot."""
+
+    bot.find_element("a.btn", By.CSS_SELECTOR).click()
+    bot.wait_for_element_visibility(
+        bot.find_element("div.modal.fade.show", By.CSS_SELECTOR)
+    )
+    bot.get_screenshot(
+        utils_variables.IMAGE_FILEPATH
+    )
