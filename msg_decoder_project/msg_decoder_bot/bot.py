@@ -1,19 +1,13 @@
 import os
 import logging
-import subprocess
+# import subprocess
 from dotenv import load_dotenv
-from botcity.web import By
 from botcity.maestro import BotMaestroSDK, AutomationTaskFinishStatus
 from utils import utils_setup, utils_variables
-
-# Desligar os logs do webdriver_manager
-os.environ['WDM_LOG'] = str(logging.NOTSET)
 
 load_dotenv()
 username_aa = os.getenv('AA_CREDENTIAL_USERNAME')
 password_aa = os.getenv('AA_CREDENTIAL_PASSWORD')
-login_target = os.getenv('TEST_CREDENTIAL_USERNAME')
-password_target = os.getenv('TEST_CREDENTIAL_PASSWORD')
 
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
