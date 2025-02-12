@@ -30,34 +30,48 @@ def main():
         logging.info("Sucesso na configuração do BotCity Maestro.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
-    
+
     # Fecha navegador
     # try:
     #     subprocess.run(["taskkill", "/f", "/im", "chrome.exe"])
     #     logging.info("Sucesso em fechar app Chrome.")
     # except Exception as err:
-    #     utils_setup.custom_error_message(err=err)    
-    
+    #     utils_setup.custom_error_message(err=err)
+
     # Instancia bot
     try:
-        bot = utils_setup.web_bot_setup()
-        logging.info("Área Community acessada.")
+        bot = utils_setup.web_bot_setup(
+            URL=utils_variables.URL_SOURCE
+        )
+        logging.info("Sucesso ao instanciar o bot.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
-    
+
     # Login em Area Community
     try:
-        utils_setup.login_community(bot=bot,
-                                    username=username_aa,
-                                    password=password_aa)
-        logging.info("Área Community acessada.")
+        utils_setup.login_community(
+            bot=bot,
+            username=username_aa,
+            password=password_aa
+        )
+        logging.info(
+            "Sucesso ao acessar a Área Community do Automation Anywhere."
+        )
     except Exception as err:
         utils_setup.custom_error_message(err=err)
-    
-    bot.wait(5000)
 
-    #bot.stop_browser()
-    
+    # Transfere dados entre URLs e finaliza processos
+    try:
+        utils_setup.translate_and_return_string(bot=bot)
+        utils_setup.finish_and_screenshot_process(bot=bot)
+        logging.info("Processo finalizado com sucesso.")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+
+    bot.wait(1000)
+
+    bot.stop_browser()
+
     maestro.finish_task(
         task_id=execution.task_id,
         status=AutomationTaskFinishStatus.SUCCESS,
