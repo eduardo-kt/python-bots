@@ -2,7 +2,7 @@ import os
 import logging
 import traceback
 from botcity.web import WebBot, Browser, By
-from botcity.maestro import AutomationTaskFinishStatus
+from botcity.plugins.csv import BotCSVPlugin
 from webdriver_manager.firefox import GeckoDriverManager
 from utils import utils_variables
 
@@ -67,3 +67,47 @@ def login_community(bot: WebBot,
 
     bot.find_element(utils_variables.XPATH_LOGIN_BUTTON,
                      By.XPATH).click()
+
+
+def csv_routine(bot: WebBot) -> list:
+    """Executa as subrotinas de baixar, salvar e configurar arquivo de csv."""
+
+    try:
+        csv_download(bot)
+        csv_transfer_to_folder()
+        csvfile = csvfile_config_as_list()
+    except Exception as err:
+        custom_error_message(err=err)
+    return csvfile
+
+
+def csv_download(bot: WebBot):
+    try:
+        bot.find_element(selector="//a[@class='btn btn-success']",
+                         by=By.XPATH).click()
+        bot.wait(2000)
+        logging.info("Sucesso em fazer download dos dados.")
+    except Exception as err:
+        custom_error_message(err=err)
+
+
+def csv_transfer_to_folder():
+    """Transfere file do local de download para a pasta desejada."""
+
+    try:
+        os.rename(
+            src=utils_variables.DEPARTURE,
+            dst=utils_variables.DESTINATION
+        )
+        logging.info("Sucesso em transferir dados para pasta archive.")
+    except Exception as err:
+        custom_error_message(err=err)
+
+
+def csvfile_config_as_list() -> list:
+    """Transforma aquivo .csv em python list."""
+
+    bot_csv = BotCSVPlugin()
+    bot_csv.read(utils_variables.DESTINATION)
+    csv_as_list = bot_csv.as_list()
+    return csv_as_list
