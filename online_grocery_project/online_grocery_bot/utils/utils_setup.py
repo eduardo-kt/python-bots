@@ -2,6 +2,7 @@ import os
 import logging
 import traceback
 from botcity.web import WebBot, Browser, By
+from botcity.maestro import AutomationTaskFinishStatus
 from webdriver_manager.firefox import GeckoDriverManager
 from utils import utils_variables
 
@@ -51,7 +52,7 @@ def login_community(bot: WebBot,
 
     bot.find_element(utils_variables.XPATH_ACCEPT_COOKIES,
                      By.XPATH).click()
-
+    bot.wait(3000)  # Firefox executava antes da hora
     bot.find_element(utils_variables.XPATH_COMMUNITY_BUTTON,
                      By.XPATH).click()
 
