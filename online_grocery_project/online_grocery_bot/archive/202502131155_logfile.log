@@ -1,0 +1,13 @@
+2025-02-13 11:55:58,519 INFO, linha 19, Início do processo.
+2025-02-13 11:55:58,519 INFO, linha 20, Sucesso ao iniciar logfile na pasta archive.
+2025-02-13 11:55:58,519 INFO, linha 30, Sucesso na configuração do Botcity Maestro.
+2025-02-13 11:56:07,804 INFO, linha 39, Sucesso ao instanciar o bot.
+2025-02-13 11:56:22,652 INFO, linha 50, Sucesso ao acessar a Área Community do Automation Anywhere.
+2025-02-13 11:56:33,413 INFO, linha 89, Sucesso em fazer download dos dados.
+2025-02-13 11:56:33,414 INFO, linha 102, Sucesso em transferir dados para pasta archive.
+2025-02-13 11:56:33,419 INFO, linha 59, Download realizado.
+2025-02-13 11:56:33,419 INFO, linha 60, Sucesso no preparo dos dados.
+2025-02-13 11:56:35,083 INFO, linha 70, Sucesso ao transmitir dados para a URL.
+2025-02-13 11:56:35,501 INFO, linha 77, Sucesso ao submeter formulário da URL.
+2025-02-13 11:56:37,201 INFO, linha 84, Fim do processo.
+2025-02-13 11:56:37,201 INFO, linha 85, resultado salvo em imagem na pasta archive.
