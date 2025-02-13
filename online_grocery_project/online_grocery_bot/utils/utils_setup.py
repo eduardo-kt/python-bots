@@ -133,3 +133,9 @@ def fill_url_with_data(data: list, bot: WebBot) -> None:
             By.CSS_SELECTOR,
             ensure_clickable=True).click()
 
+
+def submit_order(bot: WebBot) -> None:
+    """Confirma checagens no site para submeter formulário."""
+
+    bot.find_element("input#agreeToTermsYes", By.CSS_SELECTOR).click()
+    bot.find_element("button#submit_button", By.CSS_SELECTOR).click()
