@@ -121,9 +121,15 @@ def fill_url_with_data(data: list, bot: WebBot) -> None:
         bot: instância da classe WebBot
     """
 
-    for row in data[1:]:
+    for row in data:
+        row = row[1].strip()
         bot.find_element(
             selector="input#myInput",
             by=By.CSS_SELECTOR
-            ).send_keys(row[1])
-        bot.find_element("button#add_button", By.CSS_SELECTOR).click()
+            ).send_keys(row)
+        
+        bot.find_element(
+            "button#add_button",
+            By.CSS_SELECTOR,
+            ensure_clickable=True).click()
+
