@@ -1,6 +1,8 @@
 import os
 import logging
 import traceback
+from botcity.web import WebBot, Browser
+from webdriver_manager.firefox import GeckoDriverManager
 from utils import utils_variables
 
 
@@ -28,3 +30,14 @@ def custom_error_message(err: Exception) -> None:
 
     lineno = traceback.extract_tb(err.__traceback___)[-1].lineno
     logging.error(f'{type(err).__name__}:{err} - Linha: {lineno}')
+
+
+def web_bot_setup(URL: str) -> WebBot:
+    """Instancia e configura o WebBot."""
+
+    bot = WebBot()
+    bot.browser = Browser.FIREFOX
+    bot.headless = False
+    bot.driver_path = GeckoDriverManager().install()
+    bot.driver.maximize_window()
+    return bot
