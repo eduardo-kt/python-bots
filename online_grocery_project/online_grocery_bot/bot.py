@@ -1,48 +1,32 @@
-"""
-WARNING:
-
-Please make sure you install the bot dependencies with `pip install --upgrade -r requirements.txt`
-in order to get all the dependencies on your Python environment.
-
-Also, if you are using PyCharm or another IDE, make sure that you use the SAME Python interpreter
-as your IDE.
-
-If you get an error like:
-```
-ModuleNotFoundError: No module named 'botcity'
-```
-
-This means that you are likely using a different Python interpreter than the one used to install the dependencies.
-To fix this, you can either:
-- Use the same interpreter as your IDE and install your bot with `pip install --upgrade -r requirements.txt`
-- Use the same interpreter as the one used to install the bot (`pip install --upgrade -r requirements.txt`)
-
-Please refer to the documentation for more information at
-https://documentation.botcity.dev/tutorials/python-automations/desktop/
-"""
-
-
-# Import for the Desktop Bot
+import logging
 from botcity.core import DesktopBot
-
-# Import for the Web Bot
 from botcity.web import WebBot, Browser, By
+from botcity.maestro import BotMaestroSDK
+from utils import utils_setup
 
-# Import for integration with BotCity Maestro SDK
-from botcity.maestro import *
-
-# Disable errors if we are not connected to Maestro
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
-def main():
-    # Runner passes the server url, the id of the task being executed,
-    # the access token and the parameters that this task receives (when applicable).
-    maestro = BotMaestroSDK.from_sys_args()
-    ## Fetch the BotExecution with details from the task, including parameters
-    execution = maestro.get_execution()
 
-    print(f"Task ID is: {execution.task_id}")
-    print(f"Task Parameters are: {execution.parameters}")
+def main():
+    # Inicia Log
+    try:
+        utils_setup.logfile_setup()
+        logging.info("Início do processo.")
+        logging.info("Sucesso ao iniciar logfile na pasta archive.")
+    except Exception as err:
+        print(f'{type(err).__name__}:{err}')
+
+    # Configura Maestro
+    try:
+        maestro = BotMaestroSDK.from_sys_args()
+        execution = maestro.get_execution()
+        print(f"Task ID is: {execution.task_id}")
+        print(f"Task Parameters are: {execution.parameters}")
+        logging.info("Sucesso na configuração do Botcity Maestro.")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+    
+    
 
     desktop_bot = DesktopBot()
 
