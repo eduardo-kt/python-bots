@@ -1,7 +1,7 @@
 import os
 import logging
 from dotenv import load_dotenv
-from botcity.core import DesktopBot
+from botcity.web import By
 from botcity.maestro import BotMaestroSDK, AutomationTaskFinishStatus
 from utils import utils_setup, utils_variables
 
@@ -70,11 +70,21 @@ def main():
         logging.info("Sucesso ao transmitir dados para a URL.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
-    
-    # Finalizar processo na URL
-    
 
-    webbot.wait(3000)
+    # Finalizar processo na URL
+    try:
+        utils_setup.submit_order(bot=webbot)
+        logging.info("Sucesso ao submeter formulário da URL.")
+        webbot.wait_for_element_visibility(
+            webbot.find_element("div.modal.fade.show", By.CSS_SELECTOR)
+        )
+        webbot.get_screenshot(
+            utils_variables.IMAGE_FILEPATH
+        )        
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+
+    webbot.wait(2000)
     webbot.stop_browser()
     maestro.finish_task(
         task_id=execution.task_id,
