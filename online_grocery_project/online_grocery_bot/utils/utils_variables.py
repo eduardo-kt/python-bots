@@ -1,6 +1,7 @@
+import os
 from datetime import datetime
 
-# variáveis
+# Variáveis
 LOGFILE_KEY_NAME = datetime.now().strftime("%Y%m%d%H%M")
 
 # URLs
@@ -20,3 +21,15 @@ XPATH_COMMUNITY_BUTTON = (
 XPATH_NAME_LOGIN = '//input[@id="43:2;a"]'
 XPATH_NEXT_BUTTON = '//button[text()="Next"]'
 XPATH_LOGIN_BUTTON = '//button[text()="Log in"]'
+
+# Paths para colocar o csvfile no lugar desejado
+DEPARTURE = os.path.join(
+    os.getcwd(),
+    "shopping-list.csv"
+)
+
+DESTINATION = os.path.join(
+    os.getcwd(),
+    "archive",
+    f"{LOGFILE_KEY_NAME}_shopping-list.csv"
+)
