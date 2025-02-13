@@ -2,7 +2,7 @@ import logging
 from botcity.core import DesktopBot
 from botcity.web import WebBot, Browser, By
 from botcity.maestro import BotMaestroSDK
-from utils import utils_setup
+from utils import utils_setup, utils_variables
 
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
@@ -25,8 +25,15 @@ def main():
         logging.info("Sucesso na configuração do Botcity Maestro.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
-    
-    
+
+    # Instancia Bot
+    try:
+        webbot = utils_setup.web_bot_setup(
+            URL=utils_variables.URL_SOURCE
+        )
+        logging.info("Sucesso ao instanciar o bot.")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
 
     desktop_bot = DesktopBot()
 
@@ -35,40 +42,23 @@ def main():
     # desktop_bot.control_c()
     # value = desktop_bot.get_clipboard()
 
-    webbot = WebBot()
-
-    # Configure whether or not to run on headless mode
-    webbot.headless = False
-
-    # Uncomment to change the default Browser to Firefox
-    # webbot.browser = Browser.FIREFOX
-
-    # Uncomment to set the WebDriver path
-    # webbot.driver_path = "<path to your WebDriver binary>"
-
-    # Opens the BotCity website.
-    webbot.browse("https://www.botcity.dev")
-
     # Implement here your logic...
     ...
 
     # Wait 3 seconds before closing
     webbot.wait(3000)
 
-    # Finish and clean up the Web Browser
-    # You MUST invoke the stop_browser to avoid
-    # leaving instances of the webdriver open
     webbot.stop_browser()
 
-    # Uncomment to mark this task as finished on BotMaestro
-    # maestro.finish_task(
-    #     task_id=execution.task_id,
-    #     status=AutomationTaskFinishStatus.SUCCESS,
-    #     message="Task Finished OK.",
-    #     total_items=0,
-    #     processed_items=0,
-    #     failed_items=0
-    # )
+    maestro.finish_task(
+        task_id=execution.task_id,
+        status=AutomationTaskFinishStatus.SUCCESS,
+        message="Task Finished OK.",
+        total_items=0,
+        processed_items=0,
+        failed_items=0
+    )
+
 
 def not_found(label):
     print(f"Element not found: {label}")
