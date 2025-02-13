@@ -33,3 +33,10 @@ DESTINATION = os.path.join(
     "archive",
     f"{LOGFILE_KEY_NAME}_shopping-list.csv"
 )
+
+# Path para imagem da tela
+IMAGE_FILEPATH = os.path.join(
+    os.getcwd(),
+    "archive",
+    f"{LOGFILE_KEY_NAME}_imagefile.png"
+)
