@@ -28,7 +28,7 @@ def logfile_setup() -> None:
 def custom_error_message(err: Exception) -> None:
     """Defina o formato da exception que é enviada ao logfile."""
 
-    lineno = traceback.extract_tb(err.__traceback___)[-1].lineno
+    lineno = traceback.extract_tb(err.__traceback__)[-1].lineno
     logging.error(f'{type(err).__name__}:{err} - Linha: {lineno}')
 
 
@@ -39,5 +39,6 @@ def web_bot_setup(URL: str) -> WebBot:
     bot.browser = Browser.FIREFOX
     bot.headless = False
     bot.driver_path = GeckoDriverManager().install()
+    bot.browse(URL)
     bot.driver.maximize_window()
     return bot
