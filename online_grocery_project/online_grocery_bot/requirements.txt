@@ -12,6 +12,6 @@ botcity-maestro-sdk>=0.5.1,<1.0
 # pandas
 pip
 setuptools
-botcity-excel-plugin
+botcity-csv-plugin
 webdriver_manager
 python-dotenv
