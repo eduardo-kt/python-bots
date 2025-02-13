@@ -127,7 +127,7 @@ def fill_url_with_data(data: list, bot: WebBot) -> None:
             selector="input#myInput",
             by=By.CSS_SELECTOR
             ).send_keys(row)
-        
+
         bot.find_element(
             "button#add_button",
             By.CSS_SELECTOR,

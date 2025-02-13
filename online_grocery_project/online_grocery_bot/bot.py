@@ -80,7 +80,9 @@ def main():
         )
         webbot.get_screenshot(
             utils_variables.IMAGE_FILEPATH
-        )        
+        )
+        logging.info("Fim do processo.")
+        logging.info("resultado salvo em imagem na pasta archive.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
 
