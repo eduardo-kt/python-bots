@@ -57,24 +57,25 @@ def main():
     try:
         csv_data_as_list = utils_setup.csv_routine(bot=webbot)
         logging.info("Download realizado.")
+        logging.info("Sucesso no preparo dos dados.")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+
+    # Iterar dados na URL
+    try:
+        utils_setup.fill_url_with_data(
+            data=csv_data_as_list,
+            bot=webbot
+        )
+        logging.info("Sucesso ao transmitir dados para a URL.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
     
-    print(csv_data_as_list)
-    desktop_bot = DesktopBot()
+    # Finalizar processo na URL
+    
 
-    # Execute operations with the DesktopBot as desired
-    # desktop_bot.control_a()
-    # desktop_bot.control_c()
-    # value = desktop_bot.get_clipboard()
-
-    # Implement here your logic...
-
-    # Wait 3 seconds before closing
     webbot.wait(3000)
-
     webbot.stop_browser()
-
     maestro.finish_task(
         task_id=execution.task_id,
         status=AutomationTaskFinishStatus.SUCCESS,
