@@ -1,8 +1,13 @@
+import os
 import logging
+from dotenv import load_dotenv
 from botcity.core import DesktopBot
-from botcity.web import WebBot, Browser, By
 from botcity.maestro import BotMaestroSDK
 from utils import utils_setup, utils_variables
+
+load_dotenv()
+username_aa = os.getenv('AA_CREDENTIAL_USERNAME')
+password_aa = os.getenv('AA_CREDENTIAL_PASSWORD')
 
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
@@ -32,6 +37,19 @@ def main():
             URL=utils_variables.URL_SOURCE
         )
         logging.info("Sucesso ao instanciar o bot.")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+
+    # Login em Area Community
+    try:
+        utils_setup.login_community(
+            bot=webbot,
+            username=username_aa,
+            password=password_aa
+        )
+        logging.info(
+            "Sucesso ao acessar a Área Community do Automation Anywhere."
+        )
     except Exception as err:
         utils_setup.custom_error_message(err=err)
 
