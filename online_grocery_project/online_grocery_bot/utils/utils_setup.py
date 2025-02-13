@@ -111,3 +111,19 @@ def csvfile_config_as_list() -> list:
     bot_csv.read(utils_variables.DESTINATION)
     csv_as_list = bot_csv.as_list()
     return csv_as_list
+
+
+def fill_url_with_data(data: list, bot: WebBot) -> None:
+    """"Preencha os campos da página com os dados do csv.
+
+        Parâmetros:
+        data: dados do csv no formato de lista
+        bot: instância da classe WebBot
+    """
+
+    for row in data[1:]:
+        bot.find_element(
+            selector="input#myInput",
+            by=By.CSS_SELECTOR
+            ).send_keys(row[1])
+        bot.find_element("button#add_button", By.CSS_SELECTOR).click()
