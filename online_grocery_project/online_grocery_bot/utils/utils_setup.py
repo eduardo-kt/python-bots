@@ -1,5 +1,6 @@
 import os
 import logging
+import traceback
 from utils import utils_variables
 
 
@@ -20,3 +21,10 @@ def logfile_setup() -> None:
         format="%(asctime)s %(levelname)s, linha %(lineno)d, %(message)s",
         encoding='utf-8',
     )
+
+
+def custom_error_message(err: Exception) -> None:
+    """Defina o formato da exception que é enviada ao logfile."""
+
+    lineno = traceback.extract_tb(err.__traceback___)[-1].lineno
+    logging.error(f'{type(err).__name__}:{err} - Linha: {lineno}')
