@@ -2,7 +2,7 @@ import os
 import logging
 from dotenv import load_dotenv
 from botcity.core import DesktopBot
-from botcity.maestro import BotMaestroSDK
+from botcity.maestro import BotMaestroSDK, AutomationTaskFinishStatus
 from utils import utils_setup, utils_variables
 
 load_dotenv()
@@ -53,6 +53,14 @@ def main():
     except Exception as err:
         utils_setup.custom_error_message(err=err)
 
+    # Download e preparo de csv
+    try:
+        csv_data_as_list = utils_setup.csv_routine(bot=webbot)
+        logging.info("Download realizado.")
+    except Exception as err:
+        utils_setup.custom_error_message(err=err)
+    
+    print(csv_data_as_list)
     desktop_bot = DesktopBot()
 
     # Execute operations with the DesktopBot as desired
@@ -61,7 +69,6 @@ def main():
     # value = desktop_bot.get_clipboard()
 
     # Implement here your logic...
-    ...
 
     # Wait 3 seconds before closing
     webbot.wait(3000)
