@@ -1,6 +1,5 @@
 import os
 import logging
-# import subprocess
 from dotenv import load_dotenv
 from botcity.maestro import BotMaestroSDK, AutomationTaskFinishStatus
 from utils import utils_setup, utils_variables
@@ -30,13 +29,6 @@ def main():
         logging.info("Sucesso na configuração do BotCity Maestro.")
     except Exception as err:
         utils_setup.custom_error_message(err=err)
-
-    # Fecha navegador
-    # try:
-    #     subprocess.run(["taskkill", "/f", "/im", "chrome.exe"])
-    #     logging.info("Sucesso em fechar app Chrome.")
-    # except Exception as err:
-    #     utils_setup.custom_error_message(err=err)
 
     # Instancia bot
     try:
