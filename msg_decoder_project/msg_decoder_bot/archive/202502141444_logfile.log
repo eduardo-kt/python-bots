@@ -1,0 +1,9 @@
+2025-02-14 14:44:54,343 INFO, linha 18, Início do processo.
+2025-02-14 14:44:54,344 INFO, linha 19, Sucesso em iniciar Logfile na pasta archive.
+2025-02-14 14:44:54,345 INFO, linha 29, Sucesso na configuração do BotCity Maestro.
+2025-02-14 14:44:59,332 INFO, linha 38, Sucesso ao instanciar o bot.
+2025-02-14 14:45:10,051 INFO, linha 49, Sucesso ao acessar a Área Community do Automation Anywhere.
+2025-02-14 14:45:15,418 INFO, linha 81, Sucesso ao capturar string:Превръщаш се в шампион на ботове. Досега си се правила добре на практика.
+2025-02-14 14:45:15,471 INFO, linha 87, Sucesso ao abrir página do tradutor.
+2025-02-14 14:45:19,114 INFO, linha 98, Sucesso ao traduzir string: You're turning into a champion of bots. You've done well in practice so far.
+2025-02-14 14:45:20,135 INFO, linha 59, Processo finalizado com sucesso.
