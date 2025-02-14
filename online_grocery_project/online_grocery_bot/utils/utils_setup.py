@@ -2,6 +2,7 @@ import os
 import logging
 import traceback
 from botcity.web import WebBot, Browser, By
+from botcity.maestro import BotMaestroSDK
 from botcity.plugins.csv import BotCSVPlugin
 from webdriver_manager.firefox import GeckoDriverManager
 from utils import utils_variables
@@ -29,7 +30,23 @@ def logfile_setup() -> None:
         logging.info("Início do processo.")
         logging.info("Sucesso ao iniciar logfile na pasta archive.")
     except Exception as err:
+        print("Erro durante criação de arquivo de logs.")
         print(f'{type(err).__name__}:{err}')
+        raise
+
+def maestro_setup():
+    """Encapsula as definições iniciais do framework Botcity."""
+
+    try:
+        maestro = BotMaestroSDK.from_sys_args()
+        execution = maestro.get_execution()
+        logging.info("Sucesso na configuração do Botcity Maestro.")
+        logging.info(f"Task ID is: {execution.task_id}")
+        logging.info(f"Task Parameters are: {execution.parameters}")
+        return maestro, execution
+    except Exception as err:
+        logging.error("Erro durente definição do BotCity Maestro.")
+        custom_error_message(err=err)
         raise
 
 
