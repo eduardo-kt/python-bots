@@ -59,15 +59,19 @@ def custom_error_message(err: Exception) -> None:
 
 def web_bot_setup(URL: str) -> WebBot:
     """Instancia e configura o WebBot."""
-
-    bot = WebBot()
-    bot.browser = Browser.FIREFOX
-    bot.headless = False
-    bot.driver_path = GeckoDriverManager().install()
-    bot.browse(URL)
-    bot.driver.maximize_window()
-    return bot
-
+    try:
+        bot = WebBot()
+        bot.browser = Browser.FIREFOX
+        bot.headless = False
+        bot.driver_path = GeckoDriverManager().install()
+        bot.browse(URL)
+        bot.driver.maximize_window()
+        logging.info("Sucesso ao instanciar o bot.")
+        return bot
+    except Exception as err:
+        logging.error("Erro ao instanciar o bot.")
+        custom_error_message(err=err)
+        raise
 
 def login_community(bot: WebBot,
                     username: str,
