@@ -123,12 +123,12 @@ def csv_routine(bot: WebBot) -> list:
     except Exception as err:
         logging.error("Erro no preparo dos dados.")
         custom_error_message(err=err)
-        sys.exit()
-    
+        sys.exit()    
 
 
 def csv_download(bot: WebBot):
     """Faz o download do arquivo csv."""
+
     try:
         bot.find_element(selector="//a[@class='btn btn-success']",
                          by=By.XPATH).click()
@@ -177,22 +177,63 @@ def fill_url_with_data(data: list, bot: WebBot) -> None:
         data: dados do csv no formato de lista
         bot: instância da classe WebBot
     """
+    try:
+        for row in data:
+            row = row[1].strip()
+            bot.find_element(
+                selector="input#myInput",
+                by=By.CSS_SELECTOR
+                ).send_keys(row)
 
-    for row in data:
-        row = row[1].strip()
-        bot.find_element(
-            selector="input#myInput",
-            by=By.CSS_SELECTOR
-            ).send_keys(row)
+            bot.find_element(
+                "button#add_button",
+                By.CSS_SELECTOR,
+                ensure_clickable=True).click()
+        logging.info("Sucesso no preenchimento dos dados na URL.")        
+    except Exception as err:
+        logging.error("Erro no preenchimento dos dados na URL.")
+        custom_error_message(err=err)
+        sys.exit()   
 
-        bot.find_element(
-            "button#add_button",
-            By.CSS_SELECTOR,
-            ensure_clickable=True).click()
+
+def close_process(bot: WebBot) -> None:
+    """Executa subrotinas para encerrar o processo."""
+    
+    try:
+        submit_order(bot=bot)
+        save_screen(bot=bot)
+        logging.info("Fim do processo.")
+    except Exception as err:
+        logging.error("Erro ao finalizar processo.")
+        custom_error_message(err=err)
+        sys.exit() 
 
 
 def submit_order(bot: WebBot) -> None:
     """Confirma checagens no site para submeter formulário."""
 
-    bot.find_element("input#agreeToTermsYes", By.CSS_SELECTOR).click()
-    bot.find_element("button#submit_button", By.CSS_SELECTOR).click()
+    try:
+        bot.find_element("input#agreeToTermsYes", By.CSS_SELECTOR).click()
+        bot.find_element("button#submit_button", By.CSS_SELECTOR).click()
+        logging.info("Checagens realizadas com sucesso.")
+    except Exception as err:
+        logging.error("Erro ao realizar checagens.")
+        custom_error_message(err=err)
+        raise 
+
+
+def save_screen(bot: WebBot):
+    """Salva a tela do final do processo em um arquivo."""
+
+    try:
+        bot.wait_for_element_visibility(
+            bot.find_element("div.modal.fade.show", By.CSS_SELECTOR)
+        )
+        bot.get_screenshot(
+            utils_variables.IMAGE_FILEPATH
+        )
+        logging.info("Tela final salva em imagem na pasta archive.")        
+    except Exception as err:
+        logging.error("Erro ao salvar tela final.")
+        custom_error_message(err=err)
+        raise 
