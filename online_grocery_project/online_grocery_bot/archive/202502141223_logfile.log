@@ -1,0 +1,15 @@
+2025-02-14 12:23:44,350 INFO, linha 33, Início do processo.
+2025-02-14 12:23:44,351 INFO, linha 34, Sucesso ao iniciar logfile na pasta archive.
+2025-02-14 12:23:44,352 INFO, linha 47, Sucesso na configuração do Botcity Maestro.
+2025-02-14 12:23:44,352 INFO, linha 48, Task ID is: 0
+2025-02-14 12:23:44,352 INFO, linha 49, Task Parameters are: {}
+2025-02-14 12:23:54,473 INFO, linha 74, Sucesso ao instanciar o bot.
+2025-02-14 12:24:08,246 INFO, linha 105, Sucesso ao acessar a Área Community do Automation Anywhere.
+2025-02-14 12:24:19,355 INFO, linha 138, Sucesso em fazer download dos dados.
+2025-02-14 12:24:19,355 INFO, linha 153, Sucesso em transferir arquivo para pasta archive.
+2025-02-14 12:24:19,361 INFO, linha 167, Sucesso na conversão de dados para formato python list.
+2025-02-14 12:24:19,361 INFO, linha 123, Sucesso no preparo dos dados.
+2025-02-14 12:24:21,048 INFO, linha 194, Sucesso no preenchimento dos dados na URL.
+2025-02-14 12:24:21,467 INFO, linha 220, Checagens realizadas com sucesso.
+2025-02-14 12:24:23,166 INFO, linha 237, Tela final salva em imagem na pasta archive.
+2025-02-14 12:24:23,166 INFO, linha 207, Fim do processo.
