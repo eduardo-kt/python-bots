@@ -1,8 +1,6 @@
 import os
-import logging
 from dotenv import load_dotenv
-from botcity.web import By
-from botcity.maestro import BotMaestroSDK, AutomationTaskFinishStatus
+from botcity.maestro import BotMaestroSDK
 from utils import utils_setup, utils_variables
 
 load_dotenv()
@@ -13,89 +11,40 @@ BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
 
 def main():
+
     # Inicia Log
-    try:
-        utils_setup.logfile_setup()
-        logging.info("Início do processo.")
-        logging.info("Sucesso ao iniciar logfile na pasta archive.")
-    except Exception as err:
-        print(f'{type(err).__name__}:{err}')
+    utils_setup.logfile_setup()
 
     # Configura Maestro
-    try:
-        maestro = BotMaestroSDK.from_sys_args()
-        execution = maestro.get_execution()
-        print(f"Task ID is: {execution.task_id}")
-        print(f"Task Parameters are: {execution.parameters}")
-        logging.info("Sucesso na configuração do Botcity Maestro.")
-    except Exception as err:
-        utils_setup.custom_error_message(err=err)
+    maestro, execution = utils_setup.maestro_setup()
 
     # Instancia Bot
-    try:
-        webbot = utils_setup.web_bot_setup(
+    webbot = utils_setup.web_bot_setup(
             URL=utils_variables.URL_SOURCE
-        )
-        logging.info("Sucesso ao instanciar o bot.")
-    except Exception as err:
-        utils_setup.custom_error_message(err=err)
+    )
 
     # Login em Area Community
-    try:
-        utils_setup.login_community(
-            bot=webbot,
-            username=username_aa,
-            password=password_aa
-        )
-        logging.info(
-            "Sucesso ao acessar a Área Community do Automation Anywhere."
-        )
-    except Exception as err:
-        utils_setup.custom_error_message(err=err)
+    utils_setup.login_community(bot=webbot,
+                                username=username_aa,
+                                password=password_aa)
 
     # Download e preparo de csv
-    try:
-        csv_data_as_list = utils_setup.csv_routine(bot=webbot)
-        logging.info("Download realizado.")
-        logging.info("Sucesso no preparo dos dados.")
-    except Exception as err:
-        utils_setup.custom_error_message(err=err)
+    csv_data_as_list = utils_setup.csv_routine(bot=webbot)
 
     # Iterar dados na URL
-    try:
-        utils_setup.fill_url_with_data(
-            data=csv_data_as_list,
-            bot=webbot
-        )
-        logging.info("Sucesso ao transmitir dados para a URL.")
-    except Exception as err:
-        utils_setup.custom_error_message(err=err)
+    utils_setup.fill_url_with_data(
+        data=csv_data_as_list,
+        bot=webbot
+    )
 
     # Finalizar processo na URL
-    try:
-        utils_setup.submit_order(bot=webbot)
-        logging.info("Sucesso ao submeter formulário da URL.")
-        webbot.wait_for_element_visibility(
-            webbot.find_element("div.modal.fade.show", By.CSS_SELECTOR)
-        )
-        webbot.get_screenshot(
-            utils_variables.IMAGE_FILEPATH
-        )
-        logging.info("Fim do processo.")
-        logging.info("resultado salvo em imagem na pasta archive.")
-    except Exception as err:
-        utils_setup.custom_error_message(err=err)
+    utils_setup.close_process(bot=webbot)
 
-    webbot.wait(2000)
-    webbot.stop_browser()
-    maestro.finish_task(
-        task_id=execution.task_id,
-        status=AutomationTaskFinishStatus.SUCCESS,
-        message="Task Finished OK.",
-        total_items=0,
-        processed_items=0,
-        failed_items=0
-    )
+    # Maestro closure
+    utils_setup.maestro_closure(wait_time=2000,
+                                bot=webbot,
+                                execution=execution,
+                                maestro=maestro)
 
 
 def not_found(label):
