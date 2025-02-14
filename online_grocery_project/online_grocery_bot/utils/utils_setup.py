@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 import traceback
 from botcity.web import WebBot, Browser, By
@@ -32,7 +33,8 @@ def logfile_setup() -> None:
     except Exception as err:
         print("Erro durante criação de arquivo de logs.")
         print(f'{type(err).__name__}:{err}')
-        raise
+        sys.exit()
+
 
 def maestro_setup():
     """Encapsula as definições iniciais do framework Botcity."""
@@ -47,7 +49,7 @@ def maestro_setup():
     except Exception as err:
         logging.error("Erro durente definição do BotCity Maestro.")
         custom_error_message(err=err)
-        raise
+        sys.exit()
 
 
 def custom_error_message(err: Exception) -> None:
@@ -59,6 +61,7 @@ def custom_error_message(err: Exception) -> None:
 
 def web_bot_setup(URL: str) -> WebBot:
     """Instancia e configura o WebBot."""
+
     try:
         bot = WebBot()
         bot.browser = Browser.FIREFOX
@@ -71,30 +74,41 @@ def web_bot_setup(URL: str) -> WebBot:
     except Exception as err:
         logging.error("Erro ao instanciar o bot.")
         custom_error_message(err=err)
-        raise
+        sys.exit()
+
 
 def login_community(bot: WebBot,
                     username: str,
                     password: str) -> None:
     """Realiza todo o processo de Community login no Automation Anywhere"""
 
-    bot.find_element(utils_variables.XPATH_ACCEPT_COOKIES,
-                     By.XPATH).click()
-    bot.wait(3000)  # Firefox executava antes da hora
-    bot.find_element(utils_variables.XPATH_COMMUNITY_BUTTON,
-                     By.XPATH).click()
+    try:
+        bot.find_element(utils_variables.XPATH_ACCEPT_COOKIES,
+                         By.XPATH).click()
+        bot.wait(2000)  # Firefox executava antes da hora        
+        bot.find_element(utils_variables.XPATH_COMMUNITY_BUTTON,
+                         By.XPATH).click()
 
-    bot.find_element(utils_variables.XPATH_NAME_LOGIN,
-                     By.XPATH).send_keys(username)
+        bot.find_element(utils_variables.XPATH_NAME_LOGIN,
+                         By.XPATH).send_keys(username)
 
-    bot.find_element(utils_variables.XPATH_NEXT_BUTTON,
-                     By.XPATH).click()
-    bot.wait(2000)
+        bot.find_element(utils_variables.XPATH_NEXT_BUTTON,
+                         By.XPATH).click()
+        bot.wait(2000)
 
-    bot.paste(password)
+        bot.paste(password)
 
-    bot.find_element(utils_variables.XPATH_LOGIN_BUTTON,
-                     By.XPATH).click()
+        bot.find_element(utils_variables.XPATH_LOGIN_BUTTON,
+                         By.XPATH).click()
+        logging.info(
+            "Sucesso ao acessar a Área Community do Automation Anywhere."
+        )
+    except Exception as err:
+        logging.error(
+            "Erro ao fazer login na área community Automation Anywhere."
+        )
+        custom_error_message(err=err)
+        sys.exit()
 
 
 def csv_routine(bot: WebBot) -> list:
