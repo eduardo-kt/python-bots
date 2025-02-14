@@ -3,7 +3,9 @@ import sys
 import logging
 import traceback
 from botcity.web import WebBot, Browser, By
-from botcity.maestro import BotMaestroSDK
+from botcity.maestro import (BotMaestroSDK,
+                             BotExecution,
+                             AutomationTaskFinishStatus)
 from botcity.plugins.csv import BotCSVPlugin
 from webdriver_manager.firefox import GeckoDriverManager
 from utils import utils_variables
@@ -237,3 +239,26 @@ def save_screen(bot: WebBot):
         logging.error("Erro ao salvar tela final.")
         custom_error_message(err=err)
         raise 
+
+
+def maestro_closure(
+        wait_time: int,
+        bot: WebBot,
+        execution: BotExecution,
+        maestro: BotMaestroSDK) -> None:
+    """Encapsula os processos de encerramento do Maestro Botcity."""
+
+    try:
+        bot.wait(2000)
+        bot.stop_browser()
+        maestro.finish_task(
+            task_id=execution.task_id,
+            status=AutomationTaskFinishStatus.SUCCESS,
+            message="Task Finished OK.",
+            total_items=0,
+            processed_items=0,
+            failed_items=0
+        )
+    except Exception as err:
+        print("Erro ao finalizar botcity Maestro.")
+        print(f'{type(err).__name__}:{err}')
