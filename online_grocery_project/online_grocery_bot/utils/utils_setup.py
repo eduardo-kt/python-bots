@@ -10,20 +10,27 @@ from utils import utils_variables
 def logfile_setup() -> None:
     """Defina a estrutura de apresentação dos logs"""
 
-    os.environ['WDM_LOG'] = str(logging.NOTSET)
-    log_dir = "archive"
-    log_file = os.path.join(
-        log_dir,
-        f"{utils_variables.LOGFILE_KEY_NAME}_logfile.log"
-    )
+    try:
+        os.environ['WDM_LOG'] = str(logging.NOTSET)
+        log_dir = "archive"
+        os.makedirs(log_dir, exist_ok=True)
+        log_file = os.path.join(
+            log_dir,
+            f"{utils_variables.LOGFILE_KEY_NAME}_logfile.log"
+        )
 
-    logging.basicConfig(
-        level=logging.INFO,
-        filename=log_file,
-        filemode="w",
-        format="%(asctime)s %(levelname)s, linha %(lineno)d, %(message)s",
-        encoding='utf-8',
-    )
+        logging.basicConfig(
+            level=logging.INFO,
+            filename=log_file,
+            filemode="w",
+            format="%(asctime)s %(levelname)s, linha %(lineno)d, %(message)s",
+            encoding='utf-8',
+        )
+        logging.info("Início do processo.")
+        logging.info("Sucesso ao iniciar logfile na pasta archive.")
+    except Exception as err:
+        print(f'{type(err).__name__}:{err}')
+        raise
 
 
 def custom_error_message(err: Exception) -> None:
