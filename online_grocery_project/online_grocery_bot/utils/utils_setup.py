@@ -118,19 +118,26 @@ def csv_routine(bot: WebBot) -> list:
         csv_download(bot)
         csv_transfer_to_folder()
         csvfile = csvfile_config_as_list()
+        logging.info("Sucesso no preparo dos dados.")
+        return csvfile
     except Exception as err:
+        logging.error("Erro no preparo dos dados.")
         custom_error_message(err=err)
-    return csvfile
+        sys.exit()
+    
 
 
 def csv_download(bot: WebBot):
+    """Faz o download do arquivo csv."""
     try:
         bot.find_element(selector="//a[@class='btn btn-success']",
                          by=By.XPATH).click()
         bot.wait(2000)
         logging.info("Sucesso em fazer download dos dados.")
     except Exception as err:
+        logging.error("Erro ao fazer o download dos dados.")
         custom_error_message(err=err)
+        sys.exit()
 
 
 def csv_transfer_to_folder():
@@ -141,22 +148,30 @@ def csv_transfer_to_folder():
             src=utils_variables.DEPARTURE,
             dst=utils_variables.DESTINATION
         )
-        logging.info("Sucesso em transferir dados para pasta archive.")
+        logging.info("Sucesso em transferir arquivo para pasta archive.")
     except Exception as err:
+        logging.error("Erro ao transferir arquivo para pasta archive.")
         custom_error_message(err=err)
+        sys.exit()
 
 
 def csvfile_config_as_list() -> list:
     """Transforma aquivo .csv em python list."""
 
-    bot_csv = BotCSVPlugin()
-    bot_csv.read(utils_variables.DESTINATION)
-    csv_as_list = bot_csv.as_list()
-    return csv_as_list
+    try:
+        bot_csv = BotCSVPlugin()
+        bot_csv.read(utils_variables.DESTINATION)
+        csv_as_list = bot_csv.as_list()
+        logging.info("Sucesso na conversão de dados para formato python list.")
+        return csv_as_list
+    except Exception as err:
+        logging.error("Erro na conversão de dados para formato python list.")
+        custom_error_message(err=err)
+        sys.exit()    
 
 
 def fill_url_with_data(data: list, bot: WebBot) -> None:
-    """"Preencha os campos da página com os dados do csv.
+    """Preencha os campos da página com os dados do csv.
 
         Parâmetros:
         data: dados do csv no formato de lista
