@@ -9,7 +9,7 @@ from botcity.maestro import (
 from src.utils.customize_error import custom_error_message
 
 
-def maestro_startup():
+def maestro_startup() -> None:
     """Encapsula as definições iniciais do framework Botcity."""
 
     try:
