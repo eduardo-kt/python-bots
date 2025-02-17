@@ -8,3 +8,6 @@ botcity-maestro-sdk>=0.5.1,<1.0
 
 # Uncomment to use Pandas
 # pandas
+setuptools
+pip
+webdriver_manager
