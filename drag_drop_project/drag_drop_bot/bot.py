@@ -1,7 +1,7 @@
-from botcity.web import WebBot, Browser, By
-from botcity.maestro import *
+from botcity.maestro import BotMaestroSDK
 
 from src.utils.log_utils import setup_logging
+from src.tasks.maestro_tasks import finalize_maestro, initialize_maestro
 
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
 
@@ -10,12 +10,7 @@ def main():
 
     setup_logging()
 
-    maestro = BotMaestroSDK.from_sys_args()
-
-    execution = maestro.get_execution()
-
-    print(f"Task ID is: {execution.task_id}")
-    print(f"Task Parameters are: {execution.parameters}")
+    maestro, execution = initialize_maestro()
 
     bot = WebBot()
 
@@ -29,17 +24,11 @@ def main():
     bot.browse("https://www.botcity.dev")
 
     # Wait 3 seconds before closing
-    bot.wait(3000)
-
-    bot.stop_browser()
-
-    maestro.finish_task(
-        task_id=execution.task_id,
-        status=AutomationTaskFinishStatus.SUCCESS,
-        message="Task Finished OK.",
-        total_items=0,
-        processed_items=0,
-        failed_items=0,
+    finalize_maestro(
+        wait_time=3000,
+        bot=bot,
+        execution=execution,
+        maestro=maestro,
     )
 
 
