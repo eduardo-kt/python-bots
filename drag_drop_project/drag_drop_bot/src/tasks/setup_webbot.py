@@ -1,7 +1,7 @@
 import sys
 import logging
 from botcity.web import WebBot, Browser
-from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from src.utils.customize_error import format_error_message
 
 
@@ -18,9 +18,9 @@ def setup_webbot(URL: str) -> WebBot:
 
     try:
         bot = WebBot()
-        bot.browser = Browser.FIREFOX
+        bot.browser = Browser.CHROME
         bot.headless = False
-        bot.driver_path = GeckoDriverManager().install()
+        bot.driver_path = ChromeDriverManager().install()
         bot.browse(url=URL)
         logging.info("Sucesso ao instanciar o bot.")
         return bot
