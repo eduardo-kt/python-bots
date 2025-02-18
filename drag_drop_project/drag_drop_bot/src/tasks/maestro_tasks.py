@@ -24,6 +24,7 @@ def initialize_maestro() -> tuple:
         logging.info("Sucesso na inicialização do BotCity Maestro.")
         logging.info(f"Task ID is: {execution.task_id}")
         logging.info(f"Task Parameters are: {execution.parameters}")
+        return maestro, execution
     except Exception as err:
         logging.error("Erro durante inicialização do BotCity Maestro.")
         format_error_message(err=err)
