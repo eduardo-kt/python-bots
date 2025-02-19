@@ -1,0 +1,7 @@
+2025-02-19 12:12:27,330 INFO, linha 66, Início do processo.
+2025-02-19 12:12:27,330 INFO, linha 67, Sucesso ao iniciar logfile na pasta logs.
+2025-02-19 12:12:27,330 INFO, linha 19, Sucesso ao iniciar arquivo de logs.
+2025-02-19 12:12:27,346 INFO, linha 24, Sucesso na inicialização do BotCity Maestro.
+2025-02-19 12:12:27,346 INFO, linha 25, Task ID is: 0
+2025-02-19 12:12:27,346 INFO, linha 26, Task Parameters are: {}
+2025-02-19 12:12:33,121 INFO, linha 25, Sucesso ao instanciar o bot.
