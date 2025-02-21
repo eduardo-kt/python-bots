@@ -17,7 +17,12 @@ def main():
 
     bot = setup_webbot(URL=URL_CORREIOS)
 
-    interact_correios(bot=bot)
+    interact_correios(
+        bot=bot,
+        cep_destiny="95913212",
+        shipping_date="25022025",
+        service_type="SEDEX",
+    )
 
     finalize_maestro(
         wait_time=3000,
